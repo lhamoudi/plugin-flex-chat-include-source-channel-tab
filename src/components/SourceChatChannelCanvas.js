@@ -10,7 +10,6 @@ class SourceChatChannelCanvas extends React.Component {
 
   render() {
     const { task } = this.props;
-    console.log(`Task SID is ${task?.sid}`)
     if (task && TaskHelper.isChatBasedTask(task) && task.attributes.sourceChatChannelSid) {
       return (
         <MessagingCanvas
