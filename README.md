@@ -2,7 +2,7 @@
 
 This is a very basic Flex Chat plugin to read a `sourceChatChannelSid` task attribute, and render the message history (from that "source" chat conversation) in a separate "History" tab within the Task Canvas. The inputs on that "History" tab are disabled - since the agent is probably not a participant in that chat channel.
 
-The use case here is when a chat task is created from another chat conversation - such as when a customer requests to chat to an agent via an otherwise automated chat conversation managed through a Studio flow (perhaps against a different Twilio phone number) - and where there's a need to give the agent immediate access to that other chat conversaation for context.
+The use case here is when a chat task is created from another chat conversation - such as when a customer requests to chat to an agent via an otherwise automated chat conversation managed through a Studio flow (perhaps against a different Twilio phone number) - and where there's a need to give the agent immediate access to that other chat conversation for context.
 
 ## Screenshots
 
