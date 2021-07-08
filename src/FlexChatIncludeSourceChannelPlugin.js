@@ -4,6 +4,8 @@ import { FlexPlugin } from "flex-plugin";
 import { Tab, TaskHelper } from "@twilio/flex-ui";
 import SourceChatChannelCanvas from "./components/SourceChatChannelCanvas";
 
+import SourceChatChannelNotification from "./components/SourceChatChannelNotification";
+
 const PLUGIN_NAME = "FlexChatIncludeSourceChannelPlugin";
 
 export default class FlexChatIncludeSourceChannelPlugin extends FlexPlugin {
@@ -20,6 +22,15 @@ export default class FlexChatIncludeSourceChannelPlugin extends FlexPlugin {
    */
   init(flex, manager) {
 
+
+    flex.TaskCanvas.Content.add(
+      <SourceChatChannelNotification 
+        key="sourceChatChannelNotification" />, 
+        { 
+          sortOrder: -1,
+          if: (props) => TaskHelper.isChatBasedTask(props.task) && props.task.attributes.sourceChatChannelSid
+        });
+ 
     // Add the History tab
     flex.TaskCanvasTabs.Content.add(
       <Tab  
@@ -28,8 +39,10 @@ export default class FlexChatIncludeSourceChannelPlugin extends FlexPlugin {
         label="History" 
         hidden={false}> 
           <SourceChatChannelCanvas />
-      </Tab>, {
-        sortOrder: 3
+      </Tab>, 
+      {
+        sortOrder: 3,
+        if: (props) => TaskHelper.isChatBasedTask(props.task) && props.task.attributes.sourceChatChannelSid
       }
     );
 
