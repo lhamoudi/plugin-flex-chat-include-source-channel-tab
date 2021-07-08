@@ -1,7 +1,7 @@
 import React from "react";
 
 import { FlexPlugin } from "flex-plugin";
-import { Tab } from "@twilio/flex-ui";
+import { Tab, TaskHelper } from "@twilio/flex-ui";
 import SourceChatChannelCanvas from "./components/SourceChatChannelCanvas";
 
 const PLUGIN_NAME = "FlexChatIncludeSourceChannelPlugin";
@@ -26,15 +26,15 @@ export default class FlexChatIncludeSourceChannelPlugin extends FlexPlugin {
         key="source-chat"
         uniqueName="source-chat"
         label="History" 
-        hidden={false} > 
+        hidden={false}> 
           <SourceChatChannelCanvas />
       </Tab>, {
-        sortOrder: 100
+        sortOrder: 3
       }
     );
 
     // Remove the Info tab
-    flex.TaskCanvasTabs.Content.remove("info");
+    //flex.TaskCanvasTabs.Content.remove("info");
 
 
   }
