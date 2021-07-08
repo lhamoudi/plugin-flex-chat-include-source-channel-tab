@@ -26,7 +26,7 @@ export default class FlexChatIncludeSourceChannelPlugin extends FlexPlugin {
         key="source-chat"
         uniqueName="source-chat"
         label="History" 
-        hidden={false} >
+        hidden={false} > 
           <SourceChatChannelCanvas />
       </Tab>, {
         sortOrder: 100
