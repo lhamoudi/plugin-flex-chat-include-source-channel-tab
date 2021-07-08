@@ -4,15 +4,30 @@ This is a very basic Flex Chat plugin to read a `sourceChatChannelSid` task attr
 
 The use case here is when a chat task is created from another chat conversation - such as when a customer requests to chat to an agent via an otherwise automated chat conversation managed through a Studio flow (perhaps against a different Twilio phone number) - and where there's a need to give the agent immediate access to that other chat conversation for context.
 
+
+## Long-Lived Channel Precautions
+
+If you use long-lived channels, there's the potential for a new task to arrive for a chat channel that's still being wrapped up by your agent. Clicking "End Chat" on a long-lived chat task will only clear the proxy session between Twilio and the customer (but will keep the channel active). Therefore a further message from the customer could lead to a new task - and if so, it would use the same long-lived chat channel.
+
+The agent shouldn’t try to handle multiple tasks for the same channel at once. Otherwise when they hit Complete on one of those tasks - they will be removed from the channel, thus impacting the other task(s) that share that same chat channel.
+
+Therefore, we've added precautionary logic to show a notification if trying to accept a task that’s for a chat channel that’s already in use in another task. The Accept Task action will be blocked until the agent wraps up other tasks associated with that channel.
+
+See Screenshots.
+
+
+
+## Injecting the sourceChatChannelSid attribute
+
+Refer to [this repository](https://github.com/twilio-professional-services/function-flex-outbound-sms) for example functions and guidance for triggering a new chat (well, SMS in this case) task via a REST call (such as from the aforementioned Studio flow).
+
 ## Screenshots
 
 <img width="700px" src="screenshots/history-tab-inactive.png"/>
 
 <img width="700px" src="screenshots/history-tab-active.png"/>
 
-## Injecting the sourceChatChannelSid attribute
-
-Refer to [this repository](https://github.com/twilio-professional-services/function-flex-outbound-sms) for example functions and guidance for triggering a new chat (well, SMS in this case) task via a REST call (such as from the aforementioned Studio flow).
+<img width="700px" src="screenshots/long-lived-channel-precautions.png"/>
 
 ## About Twilio Flex Plugins
 
