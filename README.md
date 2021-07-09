@@ -7,14 +7,13 @@ The use case here is when a chat task is created from another chat conversation 
 
 ## Long-Lived Channel Precautions
 
-If you use long-lived channels, there's the potential for a new task to arrive for a chat channel that's still being wrapped up by your agent. Clicking "End Chat" on a long-lived chat task will only clear the proxy session between Twilio and the customer (but will keep the channel active). Therefore a further message from the customer could lead to a new task - and if so, it would use the same long-lived chat channel.
+If you use long-lived channels, there's the potential for a new task to arrive for a chat channel that's still being wrapped up by your agent. Clicking "End Chat" on a long-lived chat task will only clear the proxy session between Twilio and the customer (but will keep the channel active). Therefore a further message from the customer would lead to a new proxy session and a new task - using the same long-lived chat channel.
 
-The agent shouldn’t try to handle multiple tasks for the same channel at once. Otherwise when they hit Complete on one of those tasks - they will be removed from the channel, thus impacting the other task(s) that share that same chat channel.
+The agent shouldn’t try to handle multiple tasks for the same channel at once. Otherwise when they hit "Complete" on one of those tasks - they will be removed from the channel, thus impacting the other task(s) that share that same chat channel
 
-Therefore, we've added precautionary logic to show a notification if trying to accept a task that’s for a chat channel that’s already in use in another task. The Accept Task action will be blocked until the agent wraps up other tasks associated with that channel.
+Therefore, we've added precautionary logic to show a notification if trying to accept a task that’s for a chat channel that’s already in use in another task. The "Accept Task" action will be blocked until the agent wraps up other tasks associated with that channel. The notification provides a convenient "Go to Task" link - to quickly jump to the existing task that needs to be wrapped up.
 
 See Screenshots.
-
 
 
 ## Injecting the sourceChatChannelSid attribute

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { FlexPlugin } from "flex-plugin";
-import { Notifications, NotificationType, Tab, TaskHelper } from "@twilio/flex-ui";
+import { Actions, Notifications, NotificationType, NotificationBar, Tab, TaskHelper } from "@twilio/flex-ui";
 import SourceChatChannelCanvas from "./components/SourceChatChannelCanvas";
 
 import SourceChatChannelNotification from "./components/SourceChatChannelNotification";
@@ -33,7 +33,20 @@ export default class FlexChatIncludeSourceChannelPlugin extends FlexPlugin {
       closeButton: true,
       content: CHAT_CHANNEL_OPEN_IN_ANOTHER_TASK,
       type: NotificationType.warning,
-      timeout: 10000
+      timeout: 8000,
+      actions: [
+        <NotificationBar.Action
+            onClick={(_, notification) => {
+              console.log(`goToTaskSid: ${notification.context.goToTaskSid}`);
+              Actions.invokeAction("SelectTask", {
+                sid: notification.context.goToTaskSid
+              });
+              Notifications.dismissNotification(notification);
+            }}
+            label="Go to Task"
+            icon="EyeBold"
+        />
+      ]
     });
 
     flex.Actions.addListener("beforeAcceptTask", (payload, abortFunction) => {
@@ -47,6 +60,8 @@ export default class FlexChatIncludeSourceChannelPlugin extends FlexPlugin {
         const array = Array.from(manager.store.getState().flex.worker.tasks.values());
         console.log(`Existing tasks: ${array}`)
         const channelSid = TaskHelper.getTaskChatChannelSid(task);
+        // We only care about checking for non-pending tasks. ANy other pending tasks will go through this same check once they
+        // try to get accepted
         let result = array.find((potentialTask) => 
             channelSid === TaskHelper.getTaskChatChannelSid(potentialTask) &&
             task.sid !== potentialTask.sid && 
@@ -54,13 +69,9 @@ export default class FlexChatIncludeSourceChannelPlugin extends FlexPlugin {
         );
 
         if (result) {
-          Notifications.showNotification(CHAT_CHANNEL_OPEN_IN_ANOTHER_TASK);
-          console.log("CHAT ALREADY OPEN! " + result.sid);
+          Notifications.showNotification(CHAT_CHANNEL_OPEN_IN_ANOTHER_TASK, { goToTaskSid: result.sid });
           abortFunction();
-        } else {
-          console.log("NO CHAT FOUND!");
-
-        }
+        } 
       }
     });
 
